@@ -1,13 +1,18 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Branch name based PR checklists'
+description: 'Submit a comment to a PR base on the branch name.'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  token:
+    description: "Your GITHUB_TOKEN secret for API interactions."
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  template_dir:
+    description: "The directory where text/markdown templates are placed."
+    required: true
+  mapping:
+    description: "The mapping between branch name patterns and PR templates."
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
+branding:
+  icon: "check-circle"
+  color: "purple"
