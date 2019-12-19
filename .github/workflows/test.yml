@@ -1,25 +1,23 @@
-name: "units-test"
-on:
-  pull_request:
-  push:
-    branches:
-      - master
-      - 'releases/*'
+name: "Tests"
+
+on: [pull_request]
 
 jobs:
   # unit tests
   units:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - run: npm ci
-    - run: npm test
+      - uses: actions/checkout@v1
+      - run: npm ci
+      - run: npm test
 
-  # test action works running from the graph  
+  # test action works running from the graph
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with:
-        milliseconds: 1000
+      - uses: actions/checkout@v1
+      - uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          template_dir: '.github/PULL_REQUEST_TEMPLATE/'
+          mapping: 'feature=feature/,feat/;bugfix=fix/,bugfix/'
