@@ -32,7 +32,7 @@ jobs:
 - `mapping` is a list of template names matched to branch prefixes;
     - the key is the filename, without the `.md` extension, e.g. `feature.md -> feature`;
     - the value is a comma-separated list of branch prefixes, e.g. `feature/,feat/`;
-    - each key-value pair se separated by a semi-comma: `;`.
+    - each key-value pair is separated by a semi-comma: `;`.
 
 Here's what a PR checklist template could look like (`feature.md`):
 
