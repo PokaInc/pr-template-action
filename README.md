@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Checklist
-        uses: PokaInc/pr-template-action@v1.0.0
+        uses: PokaInc/pr-template-action@v1.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           template_dir: '.the/path/to/your/templates/'
