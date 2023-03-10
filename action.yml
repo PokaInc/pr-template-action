@@ -10,8 +10,11 @@ inputs:
   mapping:
     description: "The mapping between branch name patterns and PR templates."
     required: true
+  default:
+    description: "The template to use when a branch name matches no patterns."
+    required: false
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
 branding:
   icon: "check-circle"

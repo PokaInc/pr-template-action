@@ -21,3 +21,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           template_dir: '.github/PULL_REQUEST_TEMPLATE/'
           mapping: 'feature=feature/,feat/;bugfix=fix/,bugfix/'
+          default: 'feature'

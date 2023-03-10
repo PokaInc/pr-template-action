@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Checklist
-        uses: PokaInc/pr-template-action@v1.0.0
+        uses: PokaInc/pr-template-action@v1.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           template_dir: '.the/path/to/your/templates/'
@@ -32,7 +32,8 @@ jobs:
 - `mapping` is a list of template names matched to branch prefixes;
     - the key is the filename, without the `.md` extension, e.g. `feature.md -> feature`;
     - the value is a comma-separated list of branch prefixes, e.g. `feature/,feat/`;
-    - each key-value pair is separated by a semi-comma: `;`.
+    - each key-value pair is separated by a semi-comma: `;`;
+- `default` is the template to use when the branch name doesn't match any patterns. This is not required and defaults to none.
 
 Here's what a PR checklist template could look like (`feature.md`):
 

@@ -16,6 +16,7 @@ async function run() {
         // Get the actions configs
         const mapping = core.getInput('mapping');
         const template_dir = core.getInput('template_dir');
+        const default_template = core.getInput('default');
         const templates = readdirSync(template_dir);
 
         // Prepare the API client
@@ -36,7 +37,7 @@ async function run() {
             return;
         }
 
-        // Everything's good, comment on the PR1
+        // Everything's good, comment on the PR!
         mapping.split(';').forEach(rule => {
             let [name, patterns] = rule.split('=');
             let filename = `${name}.md`;
@@ -48,20 +49,41 @@ async function run() {
                         return;
                     }
 
-                    let file_content = readFileSync(`${template_dir}${filename}`, {encoding: "utf8"});
+                    create_comment(octokit, issue, template_dir, filename);
 
-                    octokit.issues.createComment({
-                        owner: issue.owner,
-                        repo: issue.repo,
-                        issue_number: issue.number,
-                        body: file_content,
-                    });
+                    return;
                 }
             });
         });
+
+        // No pattern matched, let's check for the default template
+        if (default_template) {
+            let filename = `${default_template}.md`;
+
+            if (!templates.includes(filename)) {
+                core.setFailed(`Could not find template: ${filename}!`);
+                return;
+            }
+
+            create_comment(octokit, issue, template_dir, filename);
+        }
     } catch (error) {
         core.setFailed(error.message);
     }
+}
+
+/**
+ * Post a comment with the content of `filename` to a given GitHub issue.
+ */
+function create_comment(octokit, issue, template_dir, filename) {
+    let file_content = readFileSync(`${template_dir}${filename}`, {encoding: "utf8"});
+
+    octokit.issues.createComment({
+        owner: issue.owner,
+        repo: issue.repo,
+        issue_number: issue.number,
+        body: file_content,
+    });
 }
 
 run()
