@@ -49,7 +49,7 @@ async function run() {
                         return;
                     }
 
-                    create_comment(issue, filename);
+                    create_comment(octokit, issue, template_dir, filename);
 
                     return;
                 }
@@ -65,7 +65,7 @@ async function run() {
                 return;
             }
 
-            create_comment(issue, filename);
+            create_comment(octokit, issue, template_dir, filename);
         }
     } catch (error) {
         core.setFailed(error.message);
@@ -75,7 +75,7 @@ async function run() {
 /**
  * Post a comment with the content of `filename` to a given GitHub issue.
  */
-function create_comment(issue, filename) {
+function create_comment(octokit, issue, template_dir, filename) {
     let file_content = readFileSync(`${template_dir}${filename}`, {encoding: "utf8"});
 
     octokit.issues.createComment({
