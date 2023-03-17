@@ -37,36 +37,28 @@ async function run() {
             return;
         }
 
-        // Everything's good, comment on the PR!
-        mapping.split(';').forEach(rule => {
-            let [name, patterns] = rule.split('=');
-            let filename = `${name}.md`;
+        let foundPrefix;
 
-            patterns.split(',').forEach(pattern => {
-                if (branch.startsWith(pattern)) {
-                    if (!templates.includes(filename)) {
-                        core.setFailed(`Could not find template: ${filename}!`);
-                        return;
-                    }
-
-                    create_comment(octokit, issue, template_dir, filename);
-
-                    return;
+        if (mapping) {
+            const mappingArr = mapping.split(';').map((curr) => {
+                const [name, prefixes] = curr.split('=');
+                return {
+                    file: name,
+                    prefixes: prefixes.split(',')
                 }
             });
-        });
 
-        // No pattern matched, let's check for the default template
-        if (default_template) {
-            let filename = `${default_template}.md`;
-
-            if (!templates.includes(filename)) {
-                core.setFailed(`Could not find template: ${filename}!`);
-                return;
-            }
-
-            create_comment(octokit, issue, template_dir, filename);
+            foundPrefix = mappingArr.find((item) => item.prefixes.some((prefix) => branch.startsWith(prefix)))
         }
+
+        const filename = `${foundPrefix?.file || default_template}.md`
+
+        if (!templates.includes(filename)) {
+            core.setFailed(`Could not find template: ${filename}!`);
+            return;
+        }
+
+        create_comment(octokit, issue, template_dir, filename);
     } catch (error) {
         core.setFailed(error.message);
     }
