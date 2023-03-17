@@ -51,7 +51,7 @@ async function run() {
             foundPrefix = mappingArr.find((item) => item.prefixes.some((prefix) => branch.startsWith(prefix)))
         }
 
-        const filename = `${foundPrefix?.file || default_template}.md`
+        const filename = `${foundPrefix ? foundPrefix.file : default_template}.md`;
 
         if (!templates.includes(filename)) {
             core.setFailed(`Could not find template: ${filename}!`);
